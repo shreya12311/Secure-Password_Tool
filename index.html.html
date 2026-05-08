@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Password Strength Analyzer</title>
+
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:#f4f7fc;
+    font-family:Arial, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    width:350px;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#1f4ed8;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    border:2px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#2563eb;
+}
+
+.strength-box{
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+#strength{
+    color:#333;
+}
+
+.tips{
+    margin-top:20px;
+}
+
+.tips ul{
+    padding-left:20px;
+}
+
+.tips li{
+    margin-bottom:8px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Password Strength Analyzer</h1>
+
+    <input type="password" id="password" placeholder="Enter Password">
+
+    <div class="strength-box">
+        <p id="strength">Strength:</p>
+    </div>
+
+    <div class="tips">
+        <h3>Suggestions:</h3>
+        <ul id="tipsList"></ul>
+    </div>
+</div>
+
+<script>
+const password = document.getElementById("password");
+const strength = document.getElementById("strength");
+const tipsList = document.getElementById("tipsList");
+
+password.addEventListener("input", () => {
+
+    const value = password.value;
+
+    let score = 0;
+    let tips = [];
+
+    // Length check
+    if(value.length >= 8){
+        score++;
+    } else{
+        tips.push("Use at least 8 characters");
+    }
+
+    // Uppercase check
+    if(/[A-Z]/.test(value)){
+        score++;
+    } else{
+        tips.push("Add uppercase letters");
+    }
+
+    // Number check
+    if(/[0-9]/.test(value)){
+        score++;
+    } else{
+        tips.push("Add numbers");
+    }
+
+    // Special character check
+    if(/[!@#$%^&*]/.test(value)){
+        score++;
+    } else{
+        tips.push("Add special characters");
+    }
+
+    // Strength display
+    if(score <= 1){
+        strength.textContent = "Strength: Weak";
+        strength.style.color = "red";
+    }
+    else if(score <= 3){
+        strength.textContent = "Strength: Medium";
+        strength.style.color = "orange";
+    }
+    else{
+        strength.textContent = "Strength: Strong";
+        strength.style.color = "green";
+    }
+
+    // Suggestions display
+    tipsList.innerHTML = "";
+
+    tips.forEach(tip => {
+        const li = document.createElement("li");
+        li.textContent = tip;
+        tipsList.appendChild(li);
+    });
+
+});
+</script>
+
+</body>
+</html>
